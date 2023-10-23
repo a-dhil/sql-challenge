@@ -1,71 +1,99 @@
--- Drop table if exist
-DROP TABLE departments;
+-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+-- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
--- Create a table and view columns datatypes
-CREATE TABLE departments (
-	dept_no VARCHAR,
-	dept_name VARCHAR NOT NULL
-	
-);
-
-SELECT * FROM departments;
-
--- Drop table if exist
-DROP TABLE dept_emp;
-
--- Create a table and view columns datatypes
-CREATE TABLE dept_emp (
-	emp_no INT,
-	dept_no VARCHAR
-);
-
-SELECT * FROM dept_emp
-
--- Drop table if exist
-DROP TABLE dept_manager;
-
--- Create a table and view columns datatypes
-CREATE TABLE dept_manager (
-	dept_no VARCHAR,
-	emp_no INT
-);
-
-SELECT * FROM dept_manager;
+-- Modify this code to update the DB schema diagram.
+-- To reset the sample schema, replace everything with
+-- two dots ('..' - without quotes).
 
 -- Drop table if exist
 DROP TABLE employees;
 
 -- Create a table and view columns datatypes
-CREATE TABLE employees(
-	emp_no INT,
-	emp_title_id VARCHAR,
-	birth_date DATE,
-	first_name VARCHAR,
-	last_name VARCHAR,
-	sex VARCHAR,
-	hire_date DATE
+
+CREATE TABLE "employees" (
+    "emp_no" int   NOT NULL,
+    "emp_title_id" varchar   NOT NULL,
+    "birth_date" date   NOT NULL,
+    "first_name" varchar   NOT NULL,
+    "last_name" varchar   NOT NULL,
+    "sex" varchar   NOT NULL,
+    "hire_date" date   NOT NULL,
+    CONSTRAINT "pk_employees" PRIMARY KEY (
+        "emp_no"
+     )
 );
 
-SELECT * FROM employees;
+-- Drop table if exist
+DROP TABLE departments;
+
+-- Create a table and view columns datatypes
+
+CREATE TABLE "departments" (
+    "dept_no" varchar   NOT NULL,
+    "dept_name" varchar   NOT NULL,
+    CONSTRAINT "pk_departments" PRIMARY KEY (
+        "dept_no"
+     )
+);
+
+-- Drop table if exist
+DROP TABLE dept_emp;
+
+-- Create a table and view columns datatypes
+
+CREATE TABLE "dept_emp" (
+    "emp_no" int   NOT NULL,
+    "dept_no" varchar   NOT NULL
+);
+
+-- Drop table if exist
+DROP TABLE dept_manager;
+
+-- Create a table and view columns datatypes
+
+CREATE TABLE "dept_manager" (
+    "dept_no" varchar   NOT NULL,
+    "emp_no" int   NOT NULL
+);
 
 -- Drop table if exist
 DROP TABLE salaries;
 
 -- Create a table and view columns datatypes
-CREATE TABLE salaries (
-	emp_no INT,
-	salary INT
-);
 
-SELECT * FROM salaries;
+CREATE TABLE "salaries" (
+    "emp_no" int   NOT NULL,
+    "salary" int   NOT NULL
+);
 
 -- Drop table if exist
 DROP TABLE titles;
 
 -- Create a table and view columns datatypes
-CREATE TABLE titles (
-	title_id VARCHAR,
-	title VARCHAR
+
+CREATE TABLE "titles" (
+    "title_id" varchar   NOT NULL,
+    "title" varchar   NOT NULL,
+    CONSTRAINT "pk_titles" PRIMARY KEY (
+        "title_id"
+     )
 );
 
-SELECT * FROM titles;
+ALTER TABLE "employees" ADD CONSTRAINT "fk_employees_emp_title_id" FOREIGN KEY("emp_title_id")
+REFERENCES "titles" ("title_id");
+
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
+
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_dept_no" FOREIGN KEY("dept_no")
+REFERENCES "departments" ("dept_no");
+
+ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
+ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
+REFERENCES "employees" ("emp_no");
+
